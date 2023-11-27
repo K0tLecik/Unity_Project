@@ -8,7 +8,6 @@ public class CameraMovement : MonoBehaviour
     public float x = 0, y = 1;
     private float yPoss;
 
-    // Update is called once per frame
     void Update()
     {
         if (player.position.y + y >= -1)

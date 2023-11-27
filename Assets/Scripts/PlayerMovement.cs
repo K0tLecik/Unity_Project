@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     private enum MovementState { stand, run, jump, fall}
     public LayerMask jumpableGround;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,19 +23,21 @@ public class PlayerMovement : MonoBehaviour
         coll = GetComponent<BoxCollider2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && isOnGround())
+        if (rb.bodyType == RigidbodyType2D.Dynamic) // ten if jest dlatego, ¿e przy œmierci wyrzuca³o b³¹d, ¿e typ "Static" nie ma parametru velocity
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+
+            if (Input.GetButtonDown("Jump") && isOnGround())
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+
+            AnimationUpdate();
         }
-
-        AnimationUpdate();
-
     }
 
     void AnimationUpdate()
